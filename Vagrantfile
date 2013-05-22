@@ -1,5 +1,8 @@
 Vagrant::Config.run do |config|
-    config.vm.box = "precise64"
+    # Bootstrap the VM
+    config.vm.provision :shell, :path => './tools/bootstrap.sh'
+
+    config.vm.box = "precise64-local"
     config.vm.forward_port 80, 3000
     
     config.vm.provision :puppet do |puppet|

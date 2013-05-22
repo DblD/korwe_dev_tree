@@ -1,10 +1,21 @@
-#include postgresql::server
-
-
-exec { "apt-get update":
-    path => "/usr/bin",
+class { 'java':
+    distribution => 'jdk',
+    version      => 'latest',
 }
 
+include rvm
+rvm::system_user {vagrant:;root:;}
+rvm_system_ruby {
+    'ruby-1.9.3-p385':
+      ensure => 'present',
+      default_use => true
+}
+
+class{ 'qpid::server':
+    package_name => 'qpidd',
+    service_ensure  => 'stopped'
+    
+}
 
 class { 'postgresql::server':
     config_hash => {
@@ -21,6 +32,7 @@ postgresql::db { 'vagrant':
     user     => 'vagrant',
     password => 'vagrant',
     grant => 'ALL'
+
 }
 
 postgresql::db { 'tree_services':
@@ -30,10 +42,10 @@ postgresql::db { 'tree_services':
 
 }
 
-postgresql::database_grant{'tree_services-vagrant':
-    privilege => 'ALL',
-    db          => 'tree_services',
-    role        => 'vagrant'
-}
+#postgresql::database_grant{'tree_services-vagrant':
+#    privilege => 'ALL',
+#    db          => 'tree_services',
+#    role        => 'vagrant'
+#}
 
 
