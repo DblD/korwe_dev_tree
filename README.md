@@ -16,7 +16,7 @@ Get and install virtual box and vagrant:
 
 Add Vagrant starter box from korwe network:
 
-	vagrant box add <box name> http://korwe.dnsalias.com/vagrant/precise64-local.box
+	vagrant box add precise64-local http://korwe.dnsalias.com/vagrant/precise64-local.box
 
 Start and provision box :
 	
