@@ -3,6 +3,32 @@ class { 'java':
     version      => 'latest',
 }
 
+package{'libboost-all-dev':
+  ensure => installed,
+
+}
+
+package{'cmake':
+  ensure => installed,
+}
+
+package{'libqpidmessaging2-dev':
+  ensure => installed,
+}
+
+package{'libqpidclient2-dev':
+  ensure => installed,
+}
+
+package{'libqpidcommon2-dev':
+  ensure => installed,
+}
+
+package{'qpid-tools':
+  ensure => installed,
+}
+
+
 include rvm
 rvm::system_user {vagrant:;root:;}
 rvm_system_ruby {
@@ -13,16 +39,17 @@ rvm_system_ruby {
 
 class{ 'qpid::server':
     package_name => 'qpidd',
-    service_ensure  => 'stopped'
-    
+    service_ensure  => 'running',
+    auth            => 'no',
+    config_file     => '/etc/qpid/qpidd.conf'
 }
 
 class { 'postgresql::server':
     config_hash => {
     'ip_mask_deny_postgres_user' => '0.0.0.0/32',
-    'ip_mask_allow_all_users'    => '0.0.0.0/0',
+#    'ip_mask_allow_all_users'    => '0.0.0.0/0',
     'listen_addresses'           => '*',
-    'ipv4acls'                   => ['hostssl all johndoe 192.168.0.0/24 cert'],
+#    'ipv4acls'                   => ['hostssl all all  192.168.0.0/24 cert'],
     'manage_redhat_firewall'     => true,
     'postgres_password'          => 'vagrant',
     },
@@ -40,6 +67,15 @@ postgresql::db { 'tree_services':
     password => 'korwe',
     grant    => 'ALL'
 
+}
+
+postgresql::pg_hba_rule { 'allow korwe applicaiton acount acceess to the database':
+  description => "Open up postgresql for access from 127.0.0.0/24",
+  type => 'local',
+  database => 'tree_services',
+  user => 'korwe',
+  #address => '0.0.0.0/0',
+  auth_method => 'md5',
 }
 
 #postgresql::database_grant{'tree_services-vagrant':
