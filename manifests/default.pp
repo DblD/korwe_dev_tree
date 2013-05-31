@@ -12,6 +12,10 @@ package{'cmake':
   ensure => installed,
 }
 
+package{'vim':
+  ensure => installed,
+}
+
 package{'libqpidmessaging2-dev':
   ensure => installed,
 }
