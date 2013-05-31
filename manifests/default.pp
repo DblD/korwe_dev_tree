@@ -16,6 +16,10 @@ package{'vim':
   ensure => installed,
 }
 
+package{'nodejs':
+  ensure => installed,
+}
+
 package{'libqpidmessaging2-dev':
   ensure => installed,
 }
@@ -26,6 +30,10 @@ package{'libqpidclient2-dev':
 
 package{'libqpidcommon2-dev':
   ensure => installed,
+}
+
+package{'libqpidtypes1-dev':
+  ensure => installed;
 }
 
 package{'qpid-tools':
