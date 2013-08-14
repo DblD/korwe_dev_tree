@@ -96,4 +96,6 @@ postgresql::pg_hba_rule { 'allow korwe applicaiton acount acceess to the databas
 #    role        => 'vagrant'
 #}
 
-
+class { 'gradle':
+  version => '1.7',
+}
